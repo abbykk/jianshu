@@ -89,6 +89,7 @@ export const RecommendItem = styled.div`
 	height: 50px;
 	background: url(${(props) => props.imgUrl});
 	background-size: contain;
+	margin-bottom:20px;
 `;
 
 export const WriterWrapper = styled.div`

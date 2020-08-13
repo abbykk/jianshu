@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -20,10 +20,10 @@ import {
 	Button
 } from './style';
 
-class Header extends Component {
+class Header extends PureComponent {
 
 	getListArea() {
-		const { focused, list, page, totalPage, mouseIn, handleMouseEnter, handleMouseLeave, handleChangePage } = this.props;
+		const { focused, list, page,totalPage,mouseIn,handleMoserEnter,handleMoserLeave ,handleChangePage} = this.props;
 		const newList = list.toJS();
 		const pageList = [];
 
@@ -37,10 +37,7 @@ class Header extends Component {
 
 		if (focused || mouseIn) {
 			return (
-				<SearchInfo 
-					onMouseEnter={handleMouseEnter}
-					onMouseLeave={handleMouseLeave}
-				>
+				<SearchInfo  onMouseEnter={handleMoserEnter} onMouseLeave={handleMoserLeave}>
 					<SearchInfoTitle>
 						热门搜索
 						<SearchInfoSwitch 
@@ -61,7 +58,7 @@ class Header extends Component {
 	}
 
 	render() {
-		const { focused, handleInputFocus, handleInputBlur, list, login, logout } = this.props;
+		const { focused, handleInputFocus, handleInputBlur, list, login, logout,mouseIn } = this.props;
 		return (
 			<HeaderWrapper>
 				<Link to='/'>
@@ -80,17 +77,17 @@ class Header extends Component {
 					</NavItem>
 					<SearchWrapper>
 						<CSSTransition
-							in={focused}
+							in={(focused || mouseIn)}
 							timeout={200}
 							classNames="slide"
 						>
 							<NavSearch
-								className={focused ? 'focused': ''}
+								className={(focused || mouseIn) ? 'focused': ''}
 								onFocus={() => handleInputFocus(list)}
 								onBlur={handleInputBlur}
 							></NavSearch>
 						</CSSTransition>
-						<i className={focused ? 'focused iconfont zoom': 'iconfont zoom'}>
+						<i className={(focused || mouseIn) ? 'focused iconfont zoom': 'iconfont zoom'}>
 							&#xe614;
 						</i>
 						{this.getListArea()}
@@ -130,13 +127,13 @@ const mapDispathToProps = (dispatch) => {
 		handleInputBlur() {
 			dispatch(actionCreators.searchBlur());
 		},
-		handleMouseEnter() {
+		handleMoserEnter(){
 			dispatch(actionCreators.mouseEnter());
 		},
-		handleMouseLeave() {
+		handleMoserLeave(){
 			dispatch(actionCreators.mouseLeave());
 		},
-		handleChangePage(page, totalPage, spin) {
+		handleChangePage(page,totalPage,spin){
 			let originAngle = spin.style.transform.replace(/[^0-9]/ig, '');
 			if (originAngle) {
 				originAngle = parseInt(originAngle, 10);
@@ -144,16 +141,20 @@ const mapDispathToProps = (dispatch) => {
 				originAngle = 0;
 			}
 			spin.style.transform = 'rotate(' + (originAngle + 360) + 'deg)';
-
-			if (page < totalPage) {
-				dispatch(actionCreators.changePage(page + 1));
-			}else {
-				dispatch(actionCreators.changePage(1));
+			let pageNew;
+			if(page<totalPage){
+				pageNew=page+1
+			}else{
+				pageNew=1
 			}
+			dispatch(actionCreators.changePage(pageNew));
+			
 		},
-		logout() {
+		logout(){
 			dispatch(loginActionCreators.logout())
 		}
+		
+		
 	}
 }
 
