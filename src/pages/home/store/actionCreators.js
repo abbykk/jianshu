@@ -9,7 +9,7 @@ const changeHomeDate=(result)=>({
 
 export const getHomeInfo=()=>{
     return (dispatch)=>{
-        axios.get('/api/home.json').then((res) => {
+        axios.get('/jianshu/build/api/home.json').then((res) => {
             const result = res.data.data
 			const action = {
 				type: constants.CHANGE_HOME_DATA,
@@ -23,7 +23,7 @@ export const getHomeInfo=()=>{
 }
 export const getMoreList=(page)=>{
     return (dispatch)=>{
-        axios.get('/api/homeList.json?page='+(page+1)).then((res) => {
+        axios.get('/jianshu/build/api/homeList.json?page='+(page+1)).then((res) => {
             const result = res.data.data
 			const action = {
 				type: constants.ADD_ARTICLE_LIST,

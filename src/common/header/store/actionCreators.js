@@ -29,7 +29,7 @@ const changeList=(data)=>({
 })
 export const getList=()=>{
       return (dispach)=>{
-        axios.get('/api/headerList.json').then((res)=>{
+        axios.get('/jianshu/build/api/headerList.json').then((res)=>{
                 const data=res.data
                 dispach(changeList(data.data))
         }).catch((err)=>{
